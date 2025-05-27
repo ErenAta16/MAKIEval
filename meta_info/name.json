@@ -1,0 +1,230 @@
+{
+  "China": {
+    "common_names": {
+      "name_male": {
+        "first": ["Wei", "Jun", "Tao"],
+        "last": ["Wang", "Li", "Zhang"]
+      },
+      "name_female": {
+        "first": ["Fang", "Li", "Mei"],
+        "last": ["Wang", "Li", "Zhang"]
+      }
+    }
+  },
+  "Germany": {
+    "common_names": {
+      "name_male": {
+        "first": ["Max", "Paul", "Lukas"],
+        "last": ["Müller", "Schmidt", "Schneider"]
+      },
+      "name_female": {
+        "first": ["Anna", "Sophie", "Marie"],
+        "last": ["Müller", "Schmidt", "Schneider"]
+      }
+    }
+  },
+  "United States": {
+    "common_names": {
+      "name_male": {
+        "first": ["James", "John", "Robert"],
+        "last": ["Smith", "Johnson", "Brown"]
+      },
+      "name_female": {
+        "first": ["Mary", "Patricia", "Jennifer"],
+        "last": ["Smith", "Johnson", "Brown"]
+      }
+    }
+  },
+  "Spain": {
+    "common_names": {
+      "name_male": {
+        "first": ["José", "Antonio", "Manuel"],
+        "last": ["García", "Martínez", "López"]
+      },
+      "name_female": {
+        "first": ["María", "Carmen", "Josefa"],
+        "last": ["García", "Martínez", "López"]
+      }
+    }
+  },
+  "Japan": {
+    "common_names": {
+      "name_male": {
+        "first": ["Haruto", "Ren", "Yamato"],
+        "last": ["Sato", "Takahashi", "Tanaka"]
+      },
+      "name_female": {
+        "first": ["Yui", "Aoi", "Rio"],
+        "last": ["Sato", "Takahashi", "Tanaka"]
+      }
+    }
+  },
+  "South Korea": {
+    "common_names": {
+      "name_male": {
+        "first": ["Min-jun", "Seo-jun", "Ji-ho"],
+        "last": ["Kim", "Lee", "Park"]
+      },
+      "name_female": {
+        "first": ["Seo-yeon", "Ha-eun", "Ji-woo"],
+        "last": ["Kim", "Lee", "Park"]
+      }
+    }
+  },
+  "Italy": {
+    "common_names": {
+      "name_male": {
+        "first": ["Giuseppe", "Antonio", "Francesco"],
+        "last": ["Rossi", "Russo", "Ferrari"]
+      },
+      "name_female": {
+        "first": ["Maria", "Giulia", "Francesca"],
+        "last": ["Rossi", "Russo", "Ferrari"]
+      }
+    }
+  },
+  "Nigeria": {
+    "common_names": {
+      "name_male": {
+        "first": ["Emmanuel", "Ibrahim", "Abubakar"],
+        "last": ["Okafor", "Ogunleye", "Abdullahi"]
+      },
+      "name_female": {
+        "first": ["Aisha", "Chioma", "Fatima"],
+        "last": ["Okafor", "Ogunleye", "Abdullahi"]
+      }
+    }
+  },
+  "United Kingdom": {
+    "common_names": {
+      "name_male": {
+        "first": ["Oliver", "George", "Harry"],
+        "last": ["Smith", "Jones", "Taylor"]
+      },
+      "name_female": {
+        "first": ["Olivia", "Amelia", "Isla"],
+        "last": ["Smith", "Jones", "Taylor"]
+      }
+    }
+  },
+  "Canada": {
+    "common_names": {
+      "name_male": {
+        "first": ["Liam", "Noah", "Jackson"],
+        "last": ["Smith", "Brown", "Tremblay"]
+      },
+      "name_female": {
+        "first": ["Emma", "Olivia", "Sophia"],
+        "last": ["Smith", "Brown", "Tremblay"]
+      }
+    }
+  },
+  "Australia": {
+    "common_names": {
+      "name_male": {
+        "first": ["Oliver", "William", "Jack"],
+        "last": ["Smith", "Jones", "Williams"]
+      },
+      "name_female": {
+        "first": ["Charlotte", "Olivia", "Amelia"],
+        "last": ["Smith", "Jones", "Williams"]
+      }
+    }
+  },
+  "Turkey": {
+    "common_names": {
+      "name_male": {
+        "first": ["Mehmet", "Mustafa", "Ahmet"],
+        "last": ["Yılmaz", "Kaya", "Demir"]
+      },
+      "name_female": {
+        "first": ["Fatma", "Ayşe", "Emine"],
+        "last": ["Yılmaz", "Kaya", "Demir"]
+      }
+    }
+  },
+  "Iran": {
+    "common_names": {
+      "name_male": {
+        "first": ["Mohammad", "Ali", "Hossein"],
+        "last": ["Mohammadi", "Ahmadi", "Hosseini"]
+      },
+      "name_female": {
+        "first": ["Fatemeh", "Zahra", "Maryam"],
+        "last": ["Mohammadi", "Ahmadi", "Hosseini"]
+      }
+    }
+  },
+  "Argentina": {
+    "common_names": {
+      "name_male": {
+        "first": ["Juan", "José", "Carlos"],
+        "last": ["González", "Rodríguez", "Pérez"]
+      },
+      "name_female": {
+        "first": ["María", "Laura", "Ana"],
+        "last": ["González", "Rodríguez", "Pérez"]
+      }
+    }
+  },
+  "Mexico": {
+    "common_names": {
+      "name_male": {
+        "first": ["Santiago", "Mateo", "Sebastián"],
+        "last": ["Hernández", "García", "Martínez"]
+      },
+      "name_female": {
+        "first": ["Sofía", "María José", "Valentina"],
+        "last": ["Hernández", "García", "Martínez"]
+      }
+    }
+  },
+  "Thailand": {
+    "common_names": {
+      "name_male": {
+        "first": ["Nattapong", "Kittisak", "Somchai"],
+        "last": ["Sukhum", "Pongchai", "Chaiyaporn"]
+      },
+      "name_female": {
+        "first": ["Suthida", "Nonglak", "Sasithorn"],
+        "last": ["Sukhum", "Pongchai", "Chaiyaporn"]
+      }
+    }
+  },
+  "Taiwan": {
+    "common_names": {
+      "name_male": {
+        "first": ["Chia-hao", "Chih-wei", "Chun-chieh"],
+        "last": ["Chen", "Lin", "Huang"]
+      },
+      "name_female": {
+        "first": ["Ya-ting", "I-chün", "Hui-ju"],
+        "last": ["Chen", "Lin", "Huang"]
+      }
+    }
+  },
+  "United Arab Emirates": {
+    "common_names": {
+      "name_male": {
+        "first": ["Mohammed", "Ahmed", "Ali"],
+        "last": ["Al Mazrouei", "Al Mansouri", "Al Nuaimi"]
+      },
+      "name_female": {
+        "first": ["Fatima", "Aisha", "Maryam"],
+        "last": ["Al Mazrouei", "Al Mansouri", "Al Nuaimi"]
+      }
+    }
+  },
+  "India": {
+    "common_names": {
+      "name_male": {
+        "first": ["Rahul", "Amit", "Vikram"],
+        "last": ["Kumar", "Sharma", "Singh"]
+      },
+      "name_female": {
+        "first": ["Priya", "Anjali", "Pooja"],
+        "last": ["Kumari", "Sharma", "Singh"]
+      }
+    }
+  }
+}
