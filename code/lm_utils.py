@@ -53,11 +53,11 @@ def llm_init(model_name):
         model = AutoModelForCausalLM.from_pretrained("CohereLabs/aya-expanse-8b", device_map="auto", torch_dtype=torch.bfloat16)
         tokenizer = AutoTokenizer.from_pretrained("CohereLabs/aya-expanse-8b")
     if model_name == "deepseek":
-        client = OpenAI(api_key="sk-fe66b828e09e45a3ba34ec9b3caf05ee", base_url="https://api.deepseek.com")
+        client = OpenAI(api_key="API Keys", base_url="https://api.deepseek.com")
 
 
     if model_name == "chatgpt":
-        client = OpenAI(api_key="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")  # Fill in your API key
+        client = OpenAI(api_key="API Keys")  # Fill in your API key
 
 def llm_response(prompt, model_name, num_responses, language=None, save_path = None, deep_seek_api = "sk-fe66b828e09e45a3ba34ec9b3caf05ee",temperature = 0.7, max_new_tokens = 100):
     language_instruction_map = {
@@ -129,7 +129,7 @@ def llm_response(prompt, model_name, num_responses, language=None, save_path = N
     
     if model_name == "chatgpt":
         responses = []
-        client = OpenAI(api_key="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")  # Fill in your API key
+        client = OpenAI(api_key="API Keys")  # Fill in your API key
 
         for i in range(num_responses):
             response = client.chat.completions.create(
@@ -161,7 +161,6 @@ def llm_response(prompt, model_name, num_responses, language=None, save_path = N
                 tmp_response_path = os.path.join(save_path, f"tmp_{language}_{model_name}.json")
                 with open(tmp_response_path, "w", encoding="utf-8") as f:
                     json.dump(responses, f, indent=2, ensure_ascii=False)
-            #print("!TEXT!",response.choices[0].message.content)
             time.sleep(0.1)
         return responses
         
