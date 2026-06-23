@@ -121,6 +121,71 @@ pytest -q tests/
 
 ---
 
+## Published-data Quality Audit
+
+`quality_report.py` audits the published Hugging Face rows without generation,
+GPU, or API keys. The default command reservoir-samples 200 rows per
+`model x language x topic` slice and writes `docs/DATA_QUALITY_REPORT.md`.
+
+```bash
+python code/quality_report.py --sample 200 --seed 42
+```
+
+Use `--full` to scan every row for the quality checks. The report includes
+degenerate text checks, language leakage estimates, missing-QID rates,
+surface-form to QID inconsistency, suspicious extraction review candidates,
+and observed group coverage.
+
+## Smoke Reproduction With Together
+
+Small-scale generation can be run through Together AI to avoid local GPU/model
+downloads. Set `TOGETHER_API_KEY` in the environment; do not commit keys.
+
+```bash
+python code/smoke_generation.py \
+  --model Qwen2.5-7B-Instruct \
+  --language en \
+  --topic books \
+  --country "United States" \
+  --num-responses 3 \
+  --faithful \
+  --seed 42
+```
+
+Outputs are written to `results/smoke/`. Compare a smoke run with the matching
+published Hugging Face slice:
+
+```bash
+python code/compare_to_published.py \
+  --model Qwen2.5-7B-Instruct \
+  --language en \
+  --topic books \
+  --country "United States" \
+  --published-limit 3
+```
+
+`--faithful` locks local-model decoding values to the paper setup:
+`temperature=0.7`, `top_p=0.9`, `top_k=10`, and `max_tokens=100`. By default,
+the CLI reuses the exact prompt string from the selected Hugging Face slice.
+
+### Model Access Matrix
+
+| Paper model | Default Together route | Task B feasibility |
+|---|---|---|
+| Qwen2.5-7B-Instruct | `Qwen/Qwen2.5-7B-Instruct-Turbo` | Recommended smoke default; provider Turbo endpoint. |
+| Llama-3.1-8B-Instruct | `meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo` | Depends on Together availability. |
+| Mistral-7B-Instruct-v0.1 | `mistralai/Mistral-7B-Instruct-v0.1` | Depends on Together availability. |
+| aya-expanse-8b | `CohereLabs/aya-expanse-8b` | Depends on Together availability. |
+| Llama-3.3-70B-Instruct | `meta-llama/Llama-3.3-70B-Instruct-Turbo` | API feasible; local full-scale requires large GPUs. |
+| ChatGPT-4o-mini | `openai/gpt-oss-120b` | **PROXY MODEL - NOT IN PAPER SET** for generation/extraction when OpenAI API is unavailable. |
+| DeepSeek-V3 | `deepseek-ai/DeepSeek-V3` | Depends on Together availability; native DeepSeek API remains separate. |
+
+Entity extraction in the paper uses GPT-4o-mini. This branch can substitute a
+Together model when `OPENAI_API_KEY` is intentionally unavailable; such runs are
+reported as proxy extraction and are not exact paper-faithful extraction.
+
+---
+
 ## ⚙️ Pipeline
 
 ```text

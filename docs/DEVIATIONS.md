@@ -10,6 +10,8 @@ be compared directly to paper-level numbers.
 |------|--------|-------|
 | Metric computation | **Added** | Upstream did not include a runnable implementation for granularity, diversity, culture specificity, or culture consensus. This branch adds `code/metrics.py`, `code/data_loading.py`, and `code/run_metrics.py`. |
 | Fidelity validation | **Added** | `code/validate_fidelity.py` scans Hugging Face parquet shards and writes `docs/FIDELITY_REPORT.md` with paper-facing sanity checks. MISMATCH rows are reported rather than hidden because released linking can differ from paper-side attribution. |
+| Published-data quality audit | **Added** | `code/quality_report.py` audits the released Hugging Face rows without generation, GPU, or API keys and writes `docs/DATA_QUALITY_REPORT.md`. Language detection is approximate and rule-based checks are review candidates, not manual labels. |
+| Smoke reproduction comparison | **Added** | `code/smoke_generation.py` and `code/compare_to_published.py` run a small Together-backed generation/extraction/linking path and compare it with the matching published HF slice. This is intentionally small-sample and not paper-scale. |
 
 ## Repository hygiene
 
@@ -17,6 +19,7 @@ be compared directly to paper-level numbers.
 |------|--------|-------|
 | API keys | **Changed** | Hardcoded placeholder/default API keys are removed from `code/lm_utils.py`. OpenAI and DeepSeek clients now read `OPENAI_API_KEY` and `DEEPSEEK_API_KEY` from the environment. |
 | `entity_extraction.py` syntax | **Fixed** | Restores importability by replacing the invalid `OpenAI(api_key )=` line with an environment-backed client initialization. |
+| Together API | **Added** | Small smoke generation can use `TOGETHER_API_KEY` through an OpenAI-compatible client. Keys stay in the environment and are not committed. |
 
 ## Metric specifics
 
@@ -41,6 +44,17 @@ be compared directly to paper-level numbers.
   `tests/test_metrics.py`. The ZH column / consensus=0.5 value could not be
   reproduced from the stated EN/DE entity attributions alone; the corresponding
   test is marked `xfail` rather than inventing an expected value.
+- **Together serving variants:** When smoke reproduction uses Together-hosted
+  endpoints such as `Qwen/Qwen2.5-7B-Instruct-Turbo`, the run is provider-backed
+  and not a local-weight execution. Reports record the Together endpoint.
+- **Proxy extraction without OpenAI:** The paper uses GPT-4o-mini for
+  extraction. If `OPENAI_API_KEY` is intentionally unavailable, this branch can
+  use a Together extraction model and records the run as proxy extraction. Those
+  metrics are not exact paper-faithful extraction results.
+- **Live Wikidata rate limits:** Smoke linking uses the existing live SPARQL
+  analysis modules. Wikidata 429/rate-limit responses can reduce linked QIDs or
+  origin-country metadata in small smoke runs; this is reported rather than
+  hidden.
 
 ## README corrections
 
