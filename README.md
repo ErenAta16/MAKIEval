@@ -16,10 +16,12 @@ We have released the MAKIEval dataset on Hugging Face:
 
 The released dataset currently contains:
 
-* 🤖 13 LLMs
+* 🤖 **7 LLMs** (see paper Table 1)
 * 🌐 13 Languages
-* 🗺️ Multiple Countries and Regions
+* 🗺️ 19 Countries and Regions
 * 🎭 6 Cultural Domains
+
+> **Note on scale:** The Hugging Face release contains approximately **5.25M rows**. The paper reports 85.8 million generated texts; at the response level the expected order of magnitude is ≈6M (1,716 prompts × 500 responses × 7 models). The difference may reflect aggregation, filtering, or release packaging — we report HF counts here rather than restating the paper figure.
 
 ### Cultural Domains
 
@@ -55,15 +57,66 @@ entities
 
 ```text
 code/
-    analysis_*.py
+    analysis_*.py            # topic-specific Wikidata linking
+    data_loading.py          # Hugging Face dataset loader
     entity_extraction.py
+    lm_utils.py
+    metrics.py               # granularity, diversity, specificity, consensus
     prompt_construct.py
     run_experiment.py
+    run_metrics.py           # CLI for metric computation
+    validate_fidelity.py      # paper-facing fidelity checks
 
 meta_info/
     country.json
     name.json
     prompt.json
+
+tests/
+    test_data_loading.py
+    test_metrics.py
+
+docs/
+    DEVIATIONS.md
+    FIDELITY_REPORT.md
+```
+
+---
+
+## 🔁 Reproduce (metrics)
+
+> ⚠️ **Use `--full` for paper-comparable numbers. The default 5,000-row limit is only a quick smoke test; Diversity and Consensus in this mode are not comparable to the paper values.**
+
+### 1. Install
+
+```bash
+python -m venv .venv
+source .venv/bin/activate   # Windows: .venv\Scripts\activate
+pip install -r requirements.txt
+```
+
+### 2. Compute metrics from the public dataset
+
+No API key is required for `run_metrics.py`; API-backed generation and entity
+extraction still require `OPENAI_API_KEY` / `DEEPSEEK_API_KEY` in the
+environment.
+
+```bash
+python code/run_metrics.py --model Qwen2.5-7B-Instruct --topic beverage --language ar --seed 42 --limit 5000
+```
+
+Outputs are written to `results/metrics/`:
+
+* `group_metrics.csv` — granularity, diversity, culture specificity per (model, topic, language, country)
+* `culture_consensus.csv` — pairwise Jaccard scores across languages
+* `parse_report.json` — entity JSON parse statistics
+
+`run_metrics.py` defaults to a 5,000-row limit for quick checks. Add `--full` to process all rows matching the selected filters.
+
+### 3. Run tests
+
+```bash
+pytest -q tests/
 ```
 
 ---
