@@ -132,7 +132,12 @@ def parse_batch_results(filename):
 
 # **Complete get_key_words function**
 def get_key_words(response_text_dict, category):
-    client = OpenAI(api_key )=  # Replace with actual API Key)
+    api_key = os.environ.get("OPENAI_API_KEY")
+    if not api_key:
+        raise ValueError(
+            "OPENAI_API_KEY environment variable is required for entity extraction."
+        )
+    client = OpenAI(api_key=api_key)
 
     file_id = prepare_batch_requests(response_text_dict, category, client)  # Generate JSONL file
     batch_id = submit_batch(client, file_id)  # Submit batch request
