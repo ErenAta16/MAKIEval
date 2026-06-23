@@ -3,7 +3,7 @@ from datetime import datetime
 import argparse
 import os
 import logging
-from entity_extraction_nobatch import get_key_words
+from entity_extraction import get_key_words
 from analysis_food import fetch_wikidata_food_info
 from analysis_beverage import fetch_wikidata_beverage_info
 from analysis_clothing import fetch_wikidata_clothing_info
@@ -17,7 +17,7 @@ import sys
 import json
 import shlex
 from collections import defaultdict, Counter
-sys.path.append(PATH)
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 import prompt_construct
 import lm_utils
 import re
