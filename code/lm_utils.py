@@ -10,6 +10,22 @@ import time
 import wikipedia as wp
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
+
+def _require_env(name):
+    value = os.environ.get(name)
+    if not value:
+        raise ValueError(
+            f"{name} environment variable is required. Set it in your environment."
+        )
+    return value
+
+
+def _resolve_deepseek_api_key(deep_seek_api=None):
+    if deep_seek_api:
+        return deep_seek_api
+    return _require_env("DEEPSEEK_API_KEY")
+
+
 def llm_init(model_name):
     global device
     global model
@@ -53,13 +69,16 @@ def llm_init(model_name):
         model = AutoModelForCausalLM.from_pretrained("CohereLabs/aya-expanse-8b", device_map="auto", torch_dtype=torch.bfloat16)
         tokenizer = AutoTokenizer.from_pretrained("CohereLabs/aya-expanse-8b")
     if model_name == "deepseek":
-        client = OpenAI(api_key="API Keys", base_url="https://api.deepseek.com")
+        client = OpenAI(
+            api_key=_require_env("DEEPSEEK_API_KEY"),
+            base_url="https://api.deepseek.com",
+        )
 
 
     if model_name == "chatgpt":
-        client = OpenAI(api_key="API Keys")  # Fill in your API key
+        client = OpenAI(api_key=_require_env("OPENAI_API_KEY"))
 
-def llm_response(prompt, model_name, num_responses, language=None, save_path = None, deep_seek_api = "sk-fe66b828e09e45a3ba34ec9b3caf05ee",temperature = 0.7, max_new_tokens = 100):
+def llm_response(prompt, model_name, num_responses, language=None, save_path = None, deep_seek_api = None,temperature = 0.7, max_new_tokens = 100):
     language_instruction_map = {
     "en": "Please answer in English.",
     "zh": "请用中文作答。",
@@ -129,7 +148,7 @@ def llm_response(prompt, model_name, num_responses, language=None, save_path = N
     
     if model_name == "chatgpt":
         responses = []
-        client = OpenAI(api_key="API Keys")  # Fill in your API key
+        client = OpenAI(api_key=_require_env("OPENAI_API_KEY"))
 
         for i in range(num_responses):
             response = client.chat.completions.create(
@@ -145,7 +164,10 @@ def llm_response(prompt, model_name, num_responses, language=None, save_path = N
     if model_name == "deepseek":
         responses = []
         # for backward compatibility, you can still use `https://api.deepseek.com/v1` as `base_url`.
-        client = OpenAI(api_key=deep_seek_api, base_url="https://api.deepseek.com")
+        client = OpenAI(
+            api_key=_resolve_deepseek_api_key(deep_seek_api),
+            base_url="https://api.deepseek.com",
+        )
 
         for i in range(num_responses):
 

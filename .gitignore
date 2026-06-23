@@ -1,0 +1,7 @@
+.env
+__pycache__/
+*.pyc
+results/
+batch_results/
+*.csv
+_sample_rows.json
