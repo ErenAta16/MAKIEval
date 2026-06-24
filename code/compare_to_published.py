@@ -88,16 +88,24 @@ def label(value: float, close_threshold: float = 0.15) -> str:
     return "DIVERGE"
 
 
+def load_country_origin_map(path: str | None) -> dict[str, str]:
+    if not path:
+        return {}
+    return json.loads(Path(path).read_text(encoding="utf-8"))
+
+
 def build_report(
     smoke: dict[str, Any],
     published_df: pd.DataFrame,
     published_limit: int | None,
+    country_origin_map: dict[str, str] | None = None,
 ) -> str:
     meta = smoke["metadata"]
     smoke_rows = smoke.get("rows", [])
     smoke_entities = flatten_entities_from_smoke(smoke)
     published_entities = flatten_entities_from_df(published_df)
     country = meta["country"]
+    published_lookup = country_origin_map or {}
 
     smoke_metrics = smoke.get("metrics") or aggregate_metrics(
         smoke_rows,
@@ -107,7 +115,9 @@ def build_report(
     published_metrics = {
         "granularity": granularity(published_entities),
         "diversity": diversity(published_entities),
-        "culture_specificity": culture_specificity(published_entities, country, {}),
+        "culture_specificity": culture_specificity(
+            published_entities, country, published_lookup
+        ),
         "entity_count": len(published_entities),
         "unique_qids": len(collect_qids(published_entities)),
     }
@@ -155,9 +165,14 @@ def build_report(
         ours = smoke_metrics.get(metric, 0)
         published = published_metrics.get(metric, 0)
         delta = float(ours) - float(published)
+        if metric == "culture_specificity" and not published_lookup:
+            status = "N/A (origin lookup not supplied)"
+            comment = "Per-QID origin metadata required for specificity comparison."
+        else:
+            status = label(delta)
+            comment = "Small N; exact match is not expected."
         lines.append(
-            f"| {metric} | {ours:.4f} | {published:.4f} | {label(delta)} | "
-            "Small N; exact match is not expected. |"
+            f"| {metric} | {ours:.4f} | {published:.4f} | {status} | {comment} |"
         )
 
     lines.extend(
@@ -170,7 +185,7 @@ def build_report(
             "## Notes",
             "",
             "- Diversity and consensus are N-sensitive; this comparison is directional only.",
-            "- Published culture specificity is `0.0` here unless per-QID origin lookup metadata is supplied.",
+            "- Published culture specificity is marked N/A unless `--country-origin-map` supplies per-QID origin metadata.",
             "- GPT-4o-mini extraction was not used because OPENAI_API_KEY is intentionally unavailable.",
         ]
     )
@@ -186,9 +201,15 @@ def main() -> None:
     parser.add_argument("--country", required=True)
     parser.add_argument("--published-limit", type=int, default=None)
     parser.add_argument("--output", default="docs/REPRODUCTION_COMPARISON.md")
+    parser.add_argument(
+        "--country-origin-map",
+        default=None,
+        help="JSON map of QID -> origin country for published culture specificity.",
+    )
     args = parser.parse_args()
 
     smoke = load_smoke(args.smoke_result, args.model, args.language, args.topic, args.country)
+    country_origin_map = load_country_origin_map(args.country_origin_map)
     limit = args.published_limit or int(smoke["metadata"].get("num_responses", 0)) or None
     filters = {
         "model": canonical_model_name(args.model),
@@ -200,7 +221,7 @@ def main() -> None:
     if published_df.empty:
         raise ValueError(f"No published rows matched filters: {filters}")
 
-    report = build_report(smoke, published_df, limit)
+    report = build_report(smoke, published_df, limit, country_origin_map)
     output = Path(args.output)
     output.parent.mkdir(parents=True, exist_ok=True)
     output.write_text(report, encoding="utf-8")
