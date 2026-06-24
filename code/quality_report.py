@@ -14,12 +14,16 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
 
-import pandas as pd
 from tqdm import tqdm
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
-from data_loading import GROUP_COLUMNS, DEFAULT_COLUMNS, iter_makieval_parquet_frames, parse_entities_field
+from data_loading import (
+    DEFAULT_COLUMNS,
+    filter_entities_for_metrics,
+    iter_makieval_parquet_frames,
+    parse_entities_field,
+)
 
 try:
     import langid
@@ -171,8 +175,10 @@ class BucketStats:
     empty_entity_rows: int = 0
     language_checked_rows: int = 0
     language_mismatch_rows: int = 0
-    entity_count: int = 0
-    missing_qid_count: int = 0
+    entity_count_all_types: int = 0
+    missing_qid_all_types: int = 0
+    entity_count_cultural_only: int = 0
+    missing_qid_cultural_only: int = 0
     suspicious_count: int = 0
 
 
@@ -205,7 +211,12 @@ def add_example(state: QualityState, kind: str, row: dict[str, Any], extra: str 
     )
 
 
-def update_bucket(bucket: BucketStats, row_flags: dict[str, bool], entities: list[dict[str, Any]]) -> None:
+def update_bucket(
+    bucket: BucketStats,
+    row_flags: dict[str, bool],
+    entities: list[dict[str, Any]],
+    cultural_entities: list[dict[str, Any]],
+) -> None:
     bucket.rows += 1
     bucket.repeated_ngram_rows += int(row_flags["repeated_ngram"])
     bucket.repeated_sentence_rows += int(row_flags["repeated_sentence"])
@@ -213,8 +224,12 @@ def update_bucket(bucket: BucketStats, row_flags: dict[str, bool], entities: lis
     bucket.language_checked_rows += int(row_flags["language_checked"])
     bucket.language_mismatch_rows += int(row_flags["language_mismatch"])
     bucket.suspicious_count += int(row_flags["suspicious"])
-    bucket.entity_count += len(entities)
-    bucket.missing_qid_count += sum(1 for entity in entities if not entity_qid(entity))
+    bucket.entity_count_all_types += len(entities)
+    bucket.missing_qid_all_types += sum(1 for entity in entities if not entity_qid(entity))
+    bucket.entity_count_cultural_only += len(cultural_entities)
+    bucket.missing_qid_cultural_only += sum(
+        1 for entity in cultural_entities if not entity_qid(entity)
+    )
 
 
 def process_row(state: QualityState, row: dict[str, Any]) -> None:
@@ -229,6 +244,7 @@ def process_row(state: QualityState, row: dict[str, Any]) -> None:
     entities, ok = parse_entities_field(row.get("entities"))
     if not ok:
         entities = []
+    cultural_entities, _excluded = filter_entities_for_metrics(entities)
 
     text = str(row.get("generated_text") or "")
     detected_language = detect_language(text)
@@ -258,13 +274,14 @@ def process_row(state: QualityState, row: dict[str, Any]) -> None:
         "suspicious": bool(suspicious_entities),
     }
 
-    update_bucket(state.overall, row_flags, entities)
+    update_bucket(state.overall, row_flags, entities, cultural_entities)
     update_bucket(
         state.by_slice[(str(row.get("model")), str(row.get("language")), str(row.get("topic")))],
         row_flags,
         entities,
+        cultural_entities,
     )
-    update_bucket(state.by_topic[str(row.get("topic"))], row_flags, entities)
+    update_bucket(state.by_topic[str(row.get("topic"))], row_flags, entities, cultural_entities)
 
     if row_flags["repeated_ngram"]:
         add_example(state, "repeated_ngram", row)
@@ -338,13 +355,17 @@ def pct(numerator: int, denominator: int) -> str:
 
 
 def bucket_row(label: str, stats: BucketStats) -> str:
-    qid_rate = pct(stats.missing_qid_count, stats.entity_count)
+    cultural_qid_rate = pct(
+        stats.missing_qid_cultural_only,
+        stats.entity_count_cultural_only,
+    )
+    all_qid_rate = pct(stats.missing_qid_all_types, stats.entity_count_all_types)
     lang_rate = pct(stats.language_mismatch_rows, stats.language_checked_rows)
     return (
         f"| {label} | {stats.rows} | {pct(stats.repeated_ngram_rows, stats.rows)} | "
         f"{pct(stats.repeated_sentence_rows, stats.rows)} | "
-        f"{pct(stats.empty_entity_rows, stats.rows)} | {lang_rate} | {qid_rate} | "
-        f"{stats.suspicious_count} |"
+        f"{pct(stats.empty_entity_rows, stats.rows)} | {lang_rate} | "
+        f"{cultural_qid_rate} | {all_qid_rate} | {stats.suspicious_count} |"
     )
 
 
@@ -385,14 +406,14 @@ def build_report(state: QualityState, mode_label: str) -> str:
         "",
         "## Summary",
         "",
-        "| Scope | Rows | Repeated n-gram | Repeated sentence | Empty entities | Language mismatch | Missing QID/entity | Suspicious rows |",
-        "|---|---:|---:|---:|---:|---:|---:|---:|",
+        "| Scope | Rows | Repeated n-gram | Repeated sentence | Empty entities | Language mismatch | missing_qid_cultural_only | missing_qid_all_types | Suspicious rows |",
+        "|---|---:|---:|---:|---:|---:|---:|---:|---:|",
         bucket_row("Overall", state.overall),
         "",
         "## Slice Breakdown",
         "",
-        "| Model / Language / Topic | Rows | Repeated n-gram | Repeated sentence | Empty entities | Language mismatch | Missing QID/entity | Suspicious rows |",
-        "|---|---:|---:|---:|---:|---:|---:|---:|",
+        "| Model / Language / Topic | Rows | Repeated n-gram | Repeated sentence | Empty entities | Language mismatch | missing_qid_cultural_only | missing_qid_all_types | Suspicious rows |",
+        "|---|---:|---:|---:|---:|---:|---:|---:|---:|",
     ]
 
     slice_rows = sorted(
@@ -411,14 +432,17 @@ def build_report(state: QualityState, mode_label: str) -> str:
             "",
             "## Missing QID By Topic",
             "",
-            "| Topic | Entities | Missing QIDs | Missing rate |",
-            "|---|---:|---:|---:|",
+            "| Topic | cultural_entities | missing_qid_cultural_only | missing_qid_cultural_only_rate | all_entities | missing_qid_all_types | missing_qid_all_types_rate |",
+            "|---|---:|---:|---:|---:|---:|---:|",
         ]
     )
     for topic, stats in sorted(state.by_topic.items()):
         lines.append(
-            f"| {topic} | {stats.entity_count} | {stats.missing_qid_count} | "
-            f"{pct(stats.missing_qid_count, stats.entity_count)} |"
+            f"| {topic} | {stats.entity_count_cultural_only} | "
+            f"{stats.missing_qid_cultural_only} | "
+            f"{pct(stats.missing_qid_cultural_only, stats.entity_count_cultural_only)} | "
+            f"{stats.entity_count_all_types} | {stats.missing_qid_all_types} | "
+            f"{pct(stats.missing_qid_all_types, stats.entity_count_all_types)} |"
         )
 
     lines.extend(
@@ -455,6 +479,8 @@ def build_report(state: QualityState, mode_label: str) -> str:
             "",
             "- Language detection uses `langid` when installed, with a script-based fallback.",
             "- Suspicious extraction rows are rule-based review candidates, not confirmed false positives.",
+            "- `missing_qid_cultural_only` excludes `place`, `person_name`, `listener_name`, and `reader_name` via `data_loading.filter_entities_for_metrics`; this is the Table 10-comparable missing-QID rate.",
+            "- `missing_qid_all_types` keeps every extracted entity type for broader extraction/linking completeness diagnostics.",
             "- Missing-QID rates are compared descriptively against the paper's 26-35% range; released data may use a different snapshot.",
         ]
     )
@@ -495,9 +521,13 @@ def main() -> None:
                     state.overall.language_mismatch_rows,
                     state.overall.language_checked_rows,
                 ),
-                "missing_qid_rate": pct(
-                    state.overall.missing_qid_count,
-                    state.overall.entity_count,
+                "missing_qid_cultural_only_rate": pct(
+                    state.overall.missing_qid_cultural_only,
+                    state.overall.entity_count_cultural_only,
+                ),
+                "missing_qid_all_types_rate": pct(
+                    state.overall.missing_qid_all_types,
+                    state.overall.entity_count_all_types,
                 ),
             },
             indent=2,

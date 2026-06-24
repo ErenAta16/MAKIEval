@@ -8,55 +8,55 @@ Scope: published HF dataset, version may differ from paper (per author).
 
 ## Summary
 
-| Scope | Rows | Repeated n-gram | Repeated sentence | Empty entities | Language mismatch | Missing QID/entity | Suspicious rows |
-|---|---:|---:|---:|---:|---:|---:|---:|
-| Overall | 109200 | 0.11% | 0.10% | 5.16% | 2.76% | 64.23% | 15 |
+| Scope | Rows | Repeated n-gram | Repeated sentence | Empty entities | Language mismatch | missing_qid_cultural_only | missing_qid_all_types | Suspicious rows |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| Overall | 109200 | 0.11% | 0.10% | 5.16% | 2.76% | 44.67% | 64.23% | 15 |
 
 ## Slice Breakdown
 
-| Model / Language / Topic | Rows | Repeated n-gram | Repeated sentence | Empty entities | Language mismatch | Missing QID/entity | Suspicious rows |
-|---|---:|---:|---:|---:|---:|---:|---:|
-| Qwen2.5-7B-Instruct / th / beverage | 200 | 0.00% | 0.00% | 13.50% | 47.50% | 78.67% | 0 |
-| Qwen2.5-7B-Instruct / th / music | 200 | 0.00% | 0.00% | 9.50% | 37.50% | 85.42% | 0 |
-| Mistral-7B-Instruct-v0.1 / it / beverage | 200 | 0.50% | 0.00% | 6.00% | 36.50% | 60.31% | 0 |
-| Qwen2.5-7B-Instruct / ar / music | 200 | 0.00% | 0.00% | 5.00% | 36.50% | 87.22% | 0 |
-| Mistral-7B-Instruct-v0.1 / it / food | 200 | 0.50% | 0.50% | 4.00% | 31.00% | 68.19% | 0 |
-| Qwen2.5-7B-Instruct / fa / clothing | 200 | 0.00% | 1.50% | 11.50% | 30.50% | 86.51% | 0 |
-| Qwen2.5-7B-Instruct / ar / food | 200 | 0.50% | 0.00% | 4.50% | 30.00% | 86.42% | 0 |
-| Qwen2.5-7B-Instruct / es / transportation | 200 | 0.00% | 0.00% | 0.00% | 29.00% | 62.05% | 0 |
-| Qwen2.5-7B-Instruct / ko / transportation | 200 | 0.00% | 0.00% | 3.50% | 28.00% | 74.71% | 0 |
-| Qwen2.5-7B-Instruct / th / transportation | 200 | 0.50% | 0.00% | 14.50% | 27.50% | 54.25% | 0 |
-| Qwen2.5-7B-Instruct / th / book | 200 | 0.00% | 0.00% | 7.50% | 27.50% | 88.94% | 0 |
-| Mistral-7B-Instruct-v0.1 / de / food | 200 | 0.50% | 0.00% | 0.00% | 27.50% | 54.48% | 0 |
-| Qwen2.5-7B-Instruct / en / beverage | 200 | 0.00% | 0.00% | 3.00% | 26.50% | 67.05% | 0 |
-| Mistral-7B-Instruct-v0.1 / es / transportation | 200 | 0.50% | 0.50% | 2.00% | 25.50% | 48.54% | 0 |
-| Mistral-7B-Instruct-v0.1 / de / book | 200 | 0.00% | 0.00% | 1.00% | 25.50% | 64.71% | 0 |
-| Mistral-7B-Instruct-v0.1 / it / clothing | 200 | 0.00% | 1.00% | 2.50% | 25.00% | 69.18% | 0 |
-| Qwen2.5-7B-Instruct / it / transportation | 200 | 2.00% | 0.00% | 17.00% | 23.00% | 50.00% | 0 |
-| Mistral-7B-Instruct-v0.1 / de / beverage | 200 | 0.00% | 0.50% | 1.50% | 22.50% | 61.76% | 0 |
-| Mistral-7B-Instruct-v0.1 / de / music | 200 | 0.00% | 0.00% | 2.00% | 22.00% | 60.47% | 0 |
-| Qwen2.5-7B-Instruct / ko / clothing | 200 | 0.00% | 0.00% | 2.00% | 22.00% | 77.82% | 0 |
-| Mistral-7B-Instruct-v0.1 / it / book | 200 | 0.00% | 0.00% | 8.50% | 21.50% | 67.23% | 0 |
-| Qwen2.5-7B-Instruct / de / clothing | 200 | 0.00% | 0.00% | 7.50% | 19.50% | 56.54% | 0 |
-| Mistral-7B-Instruct-v0.1 / es / music | 200 | 0.50% | 0.00% | 30.50% | 19.00% | 73.89% | 0 |
-| Qwen2.5-7B-Instruct / ar / transportation | 200 | 0.00% | 0.00% | 11.00% | 19.00% | 76.06% | 0 |
-| Qwen2.5-7B-Instruct / th / food | 200 | 0.00% | 0.00% | 2.50% | 18.50% | 88.75% | 0 |
-| Mistral-7B-Instruct-v0.1 / th / transportation | 200 | 2.50% | 1.50% | 40.50% | 18.00% | 93.30% | 0 |
-| Mistral-7B-Instruct-v0.1 / it / music | 200 | 0.00% | 0.50% | 37.00% | 18.00% | 61.49% | 0 |
-| Qwen2.5-7B-Instruct / tr / music | 200 | 2.50% | 0.00% | 3.00% | 18.00% | 47.61% | 0 |
-| Mistral-7B-Instruct-v0.1 / es / clothing | 200 | 0.50% | 0.00% | 2.00% | 17.50% | 64.30% | 0 |
-| Qwen2.5-7B-Instruct / es / food | 200 | 0.00% | 0.00% | 7.50% | 17.00% | 71.83% | 0 |
+| Model / Language / Topic | Rows | Repeated n-gram | Repeated sentence | Empty entities | Language mismatch | missing_qid_cultural_only | missing_qid_all_types | Suspicious rows |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| Qwen2.5-7B-Instruct / th / beverage | 200 | 0.00% | 0.00% | 13.50% | 47.50% | 50.87% | 78.67% | 0 |
+| Qwen2.5-7B-Instruct / th / music | 200 | 0.00% | 0.00% | 9.50% | 37.50% | 74.02% | 85.42% | 0 |
+| Mistral-7B-Instruct-v0.1 / it / beverage | 200 | 0.50% | 0.00% | 6.00% | 36.50% | 40.00% | 60.31% | 0 |
+| Qwen2.5-7B-Instruct / ar / music | 200 | 0.00% | 0.00% | 5.00% | 36.50% | 70.05% | 87.22% | 0 |
+| Mistral-7B-Instruct-v0.1 / it / food | 200 | 0.50% | 0.50% | 4.00% | 31.00% | 56.21% | 68.19% | 0 |
+| Qwen2.5-7B-Instruct / fa / clothing | 200 | 0.00% | 1.50% | 11.50% | 30.50% | 80.56% | 86.51% | 0 |
+| Qwen2.5-7B-Instruct / ar / food | 200 | 0.50% | 0.00% | 4.50% | 30.00% | 74.06% | 86.42% | 0 |
+| Qwen2.5-7B-Instruct / es / transportation | 200 | 0.00% | 0.00% | 0.00% | 29.00% | 48.75% | 62.05% | 0 |
+| Qwen2.5-7B-Instruct / ko / transportation | 200 | 0.00% | 0.00% | 3.50% | 28.00% | 48.36% | 74.71% | 0 |
+| Qwen2.5-7B-Instruct / th / transportation | 200 | 0.50% | 0.00% | 14.50% | 27.50% | 41.85% | 54.25% | 0 |
+| Qwen2.5-7B-Instruct / th / book | 200 | 0.00% | 0.00% | 7.50% | 27.50% | 81.25% | 88.94% | 0 |
+| Mistral-7B-Instruct-v0.1 / de / food | 200 | 0.50% | 0.00% | 0.00% | 27.50% | 37.39% | 54.48% | 0 |
+| Qwen2.5-7B-Instruct / en / beverage | 200 | 0.00% | 0.00% | 3.00% | 26.50% | 26.40% | 67.05% | 0 |
+| Mistral-7B-Instruct-v0.1 / es / transportation | 200 | 0.50% | 0.50% | 2.00% | 25.50% | 14.84% | 48.54% | 0 |
+| Mistral-7B-Instruct-v0.1 / de / book | 200 | 0.00% | 0.00% | 1.00% | 25.50% | 39.45% | 64.71% | 0 |
+| Mistral-7B-Instruct-v0.1 / it / clothing | 200 | 0.00% | 1.00% | 2.50% | 25.00% | 59.30% | 69.18% | 0 |
+| Qwen2.5-7B-Instruct / it / transportation | 200 | 2.00% | 0.00% | 17.00% | 23.00% | 19.06% | 50.00% | 0 |
+| Mistral-7B-Instruct-v0.1 / de / beverage | 200 | 0.00% | 0.50% | 1.50% | 22.50% | 38.40% | 61.76% | 0 |
+| Mistral-7B-Instruct-v0.1 / de / music | 200 | 0.00% | 0.00% | 2.00% | 22.00% | 34.51% | 60.47% | 0 |
+| Qwen2.5-7B-Instruct / ko / clothing | 200 | 0.00% | 0.00% | 2.00% | 22.00% | 69.09% | 77.82% | 0 |
+| Mistral-7B-Instruct-v0.1 / it / book | 200 | 0.00% | 0.00% | 8.50% | 21.50% | 46.82% | 67.23% | 0 |
+| Qwen2.5-7B-Instruct / de / clothing | 200 | 0.00% | 0.00% | 7.50% | 19.50% | 49.23% | 56.54% | 0 |
+| Mistral-7B-Instruct-v0.1 / es / music | 200 | 0.50% | 0.00% | 30.50% | 19.00% | 50.89% | 73.89% | 0 |
+| Qwen2.5-7B-Instruct / ar / transportation | 200 | 0.00% | 0.00% | 11.00% | 19.00% | 38.20% | 76.06% | 0 |
+| Qwen2.5-7B-Instruct / th / food | 200 | 0.00% | 0.00% | 2.50% | 18.50% | 77.47% | 88.75% | 0 |
+| Mistral-7B-Instruct-v0.1 / th / transportation | 200 | 2.50% | 1.50% | 40.50% | 18.00% | 42.86% | 93.30% | 0 |
+| Mistral-7B-Instruct-v0.1 / it / music | 200 | 0.00% | 0.50% | 37.00% | 18.00% | 37.57% | 61.49% | 0 |
+| Qwen2.5-7B-Instruct / tr / music | 200 | 2.50% | 0.00% | 3.00% | 18.00% | 36.98% | 47.61% | 0 |
+| Mistral-7B-Instruct-v0.1 / es / clothing | 200 | 0.50% | 0.00% | 2.00% | 17.50% | 53.35% | 64.30% | 0 |
+| Qwen2.5-7B-Instruct / es / food | 200 | 0.00% | 0.00% | 7.50% | 17.00% | 52.06% | 71.83% | 0 |
 
 ## Missing QID By Topic
 
-| Topic | Entities | Missing QIDs | Missing rate |
-|---|---:|---:|---:|
-| beverage | 54389 | 34331 | 63.12% |
-| book | 53852 | 38373 | 71.26% |
-| clothing | 99994 | 63442 | 63.45% |
-| food | 96032 | 59236 | 61.68% |
-| music | 49540 | 34847 | 70.34% |
-| transportation | 75580 | 45548 | 60.26% |
+| Topic | cultural_entities | missing_qid_cultural_only | missing_qid_cultural_only_rate | all_entities | missing_qid_all_types | missing_qid_all_types_rate |
+|---|---:|---:|---:|---:|---:|---:|
+| beverage | 27862 | 9514 | 34.15% | 54389 | 34331 | 63.12% |
+| book | 26346 | 11530 | 43.76% | 53852 | 38373 | 71.26% |
+| clothing | 83695 | 47559 | 56.82% | 99994 | 63442 | 63.45% |
+| food | 63228 | 28352 | 44.84% | 96032 | 59236 | 61.68% |
+| music | 25148 | 10911 | 43.39% | 49540 | 34847 | 70.34% |
+| transportation | 40664 | 11386 | 28.00% | 75580 | 45548 | 60.26% |
 
 ## Surface Form To QID Inconsistency
 
@@ -117,4 +117,6 @@ Scope: published HF dataset, version may differ from paper (per author).
 
 - Language detection uses `langid` when installed, with a script-based fallback.
 - Suspicious extraction rows are rule-based review candidates, not confirmed false positives.
+- `missing_qid_cultural_only` excludes `place`, `person_name`, `listener_name`, and `reader_name` via `data_loading.filter_entities_for_metrics`; this is the Table 10-comparable missing-QID rate.
+- `missing_qid_all_types` keeps every extracted entity type for broader extraction/linking completeness diagnostics.
 - Missing-QID rates are compared descriptively against the paper's 26-35% range; released data may use a different snapshot.
