@@ -21,7 +21,7 @@ Scope: small-sample, not paper-scale. Published data may be an older snapshot pe
 |---|---:|---:|---|---|
 | granularity | 0.8333 | 1.0000 | DIVERGE | Small N; exact match is not expected. |
 | diversity | 1.0000 | 2.0000 | DIVERGE | Small N; exact match is not expected. |
-| culture_specificity | 0.0000 | 0.0000 | MATCH | Small N; exact match is not expected. |
+| culture_specificity | 0.0000 | 0.0000 | N/A (origin lookup not supplied) | Needs --country-origin-map; not evaluated here. |
 | entity_count | 6.0000 | 9.0000 | DIVERGE | Small N; exact match is not expected. |
 | unique_qids | 1.0000 | 2.0000 | DIVERGE | Small N; exact match is not expected. |
 | qid_set_jaccard | 0.0000 | n/a | DIVERGE | Entity-set overlap between our slice and published slice. |
