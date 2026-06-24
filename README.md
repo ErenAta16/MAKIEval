@@ -126,6 +126,7 @@ pytest -q tests/
 `quality_report.py` audits the published Hugging Face rows without generation,
 GPU, or API keys. The default command reservoir-samples 200 rows per
 `model x language x topic` slice and writes `docs/DATA_QUALITY_REPORT.md`.
+See docs/RESULTS.md for an audit summary with figures.
 
 ```bash
 python code/quality_report.py --sample 200 --seed 42
